@@ -2,7 +2,7 @@
 
 ## 1.1 Installing MAPS-Explore on Windows
 
-Windows users can download and extract this archive: [MAPS-Explore-v1.0.0-windows-x86_64-portable.zip](https://drive.google.com/file/d/1mi-nxW5ZRlNpJ6hD5-Qb_2gEll1hMxNh/view?usp=drive_link). The application is fully portable — no installation required. However, avoid deploying it under a path that contains Chinese characters.
+Windows users can download and extract this archive: [MAPS-Explore-v1.0.0-windows-x86_64-portable.zip](https://zenodo.org/records/21335018). The application is fully portable — no installation required. However, avoid deploying it under a path that contains Chinese characters.
 
 <!-- 这是一张图片，ocr 内容为： -->
 ![](./_images/1783647918778-bb3a9262-b828-42c4-8ea0-f15a0342ba41.png)
@@ -24,7 +24,7 @@ Right-click the tray icon to switch between **Edit mode** and **Presentation mod
 
 ## 1.2 Installing MAPS-Explore on Linux
 
-Linux users can download and extract this archive: [MAPS-Explore-v1.0.0-linux-x86_64-portable.tar.gz](https://drive.google.com/file/d/1QLWiV8fxYcHerfrug3ZhojQKcc4bSCI8/view?usp=drive_link). We recommend Ubuntu 24+ or CentOS 8+. No pre-configuration is required.
+Linux users can download and extract this archive: [MAPS-Explore-v1.0.0-linux-x86_64-portable.tar.gz](https://zenodo.org/records/21335018). We recommend Ubuntu 24+ or CentOS 8+. No pre-configuration is required.
 
 ```bash
 wget http://bioinfor.imu.edu.cn/biocloud/downloads/MAPS-Explore-v1.0.0-linux-x86_64-portable.tar.gz
@@ -49,7 +49,7 @@ bash start --read-only
 
 ## 1.3 Installing MAPS-Explore on macOS
 
-macOS users can download and extract this archive: [MAPS-Explore-v1.0.0-MacOS-portable.tar.gz](https://drive.google.com/file/d/1Zc6EpyAWat13nWganCYIZgmxStippdYF/view?usp=drive_link).
+macOS users can download and extract this archive: [MAPS-Explore-v1.0.0-MacOS-portable.tar.gz](https://zenodo.org/records/21335018).
 
 <!-- 这是一张图片，ocr 内容为： -->
 ![](./_images/1783764651579-797ebe43-ce8a-4f90-bc3f-49c0f1b9ee98.png)
