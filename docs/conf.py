@@ -38,6 +38,7 @@ pygments_dark_style = "monokai"
 
 html_theme = "furo"
 html_static_path = ["_static"]
+html_css_files = ["css/site.css"]
 html_show_sphinx = False
 html_show_sourcelink = False
 html_theme_options = {

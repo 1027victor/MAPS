@@ -1,0 +1,32 @@
+/* Keep long tutorial headings on one line on desktop. */
+@media (min-width: 64em) {
+  #furo-main-content h1,
+  #furo-main-content h2 {
+    position: relative;
+    display: block;
+    line-height: 1.2;
+    max-width: 100%;
+  }
+
+  #furo-main-content h1 {
+    font-size: clamp(1.2rem, 1.8vw, 1.65rem);
+  }
+
+  #furo-main-content h2 {
+    font-size: clamp(1rem, 1.35vw, 1.25rem);
+  }
+
+  #furo-main-content h1 > span,
+  #furo-main-content h2 > span {
+    display: inline-block;
+    max-width: 100%;
+    white-space: nowrap;
+  }
+
+  #furo-main-content h1 > .headerlink,
+  #furo-main-content h2 > .headerlink {
+    position: absolute;
+    left: 100%;
+    margin-left: 0.25rem;
+  }
+}
