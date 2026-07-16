@@ -3,6 +3,11 @@ MAPS Documentation
 
 Welcome to the MAPS documentation. This site contains installation notes and tutorial notebooks.
 
+.. image:: _static/img/Figure1.jpg
+   :alt: MAPS overview figure
+   :align: center
+   :width: 100%
+
 Important Resources
 -------------------
 
