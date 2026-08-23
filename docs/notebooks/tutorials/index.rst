@@ -92,4 +92,5 @@ Tutorials
    Partial_alignment/index
    Reference_and_sequential_alignment/index
    3D_reconstruction/index
+   Ultra_arge_scale_alignment/index
    MAPS_Explore/README

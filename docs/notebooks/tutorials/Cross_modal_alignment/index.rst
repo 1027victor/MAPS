@@ -11,3 +11,6 @@ Cross Modal Alignment
    RIBOmap Mouse Brain <ribomap_mouse_brain>
    Xenium Prime Mouse HE <xenium_prime_mouse_he>
    Xenium V1 Mouse Pup <xenium_v1_mouse_pup>
+   Epigenomic simulation alignment <Epigenomic_simulation_alignment>
+   Renal cell carcinoma <Renal_cell_carcinoma>
+   IF HE Xenium <IF_HE_Xenium>
