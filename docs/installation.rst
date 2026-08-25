@@ -1,10 +1,11 @@
 Installation
-=======================
+============
+
+Installation via GitHub
+-----------------------
 
 Download
---------
-
-Clone the MAPS repository from `GitHub <https://github.com/dbjzs/MAPS>`_:
+~~~~~~~~
 
 .. code-block:: bash
 
@@ -12,29 +13,49 @@ Clone the MAPS repository from `GitHub <https://github.com/dbjzs/MAPS>`_:
     cd MAPS
 
 Environment
------------
+~~~~~~~~~~~
 
-MAPS requires Python 3.10. We recommend training MAPS models on a device
-with GPU support.
+MAPS is available for Python 3.10. We recommend training MAPS models on a
+device with GPU support.
 
-Create and activate a Conda environment:
+Create and activate the Conda environment:
 
 .. code-block:: bash
 
-    conda create -n MAPS -c conda-forge python=3.10.13 libopenblas=0.3.25 -y
+    conda create -n MAPS -c conda-forge python==3.10.13 libopenblas=0.3.25 -y
     conda activate MAPS
 
 Package installation
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
-Install the required dependencies:
+Install the requirements and then install MAPS from the local repository:
 
 .. code-block:: bash
 
     pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+    pip install .
 
-Then install MAPS from the local repository:
+Installation via PyPI
+---------------------
+
+Environment
+~~~~~~~~~~~
+
+MAPS is available for Python 3.10. We recommend training MAPS models on a
+device with GPU support.
+
+Create and activate the Conda environment:
 
 .. code-block:: bash
 
-    pip install .
+    conda create -n MAPS -c conda-forge python==3.10.13 libopenblas=0.3.25 -y
+    conda activate MAPS
+
+Package installation
+~~~~~~~~~~~~~~~~~~~~
+
+Install MAPS from PyPI:
+
+.. code-block:: bash
+
+    pip install mapspatial

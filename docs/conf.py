@@ -37,14 +37,19 @@ pygments_style = "tango"
 pygments_dark_style = "monokai"
 
 html_theme = "furo"
+templates_path = ["_templates"]
 html_static_path = ["_static"]
 html_css_files = ["css/site.css"]
 html_show_sphinx = False
 html_show_sourcelink = False
+html_context = {
+    "github_repository_url": "https://github.com/dbjzs/MAPS",
+}
 html_theme_options = {
     "sidebar_hide_name": True,
     "light_logo": "img/light_mode_logo.png",
     "dark_logo": "img/dark_mode_logo.png",
+    "top_of_page_buttons": ["view"],
     "light_css_variables": {
         "color-brand-primary": "#5c7c9b",
         "color-brand-content": "#5c7c9b",

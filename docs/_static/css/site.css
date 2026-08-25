@@ -1,3 +1,9 @@
+/* Keep the top-right controls above overlapping page headings. */
+.content-icon-container {
+  position: relative;
+  z-index: 1;
+}
+
 /* Keep long tutorial headings on one line on desktop. */
 @media (min-width: 64em) {
   #furo-main-content h1,

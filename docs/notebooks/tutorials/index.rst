@@ -29,8 +29,10 @@ Tutorials
      .maps-tutorial-card img {
        display: block;
        width: 100%;
-       aspect-ratio: 16 / 9;
-       object-fit: cover;
+       height: 150px;
+       object-fit: contain;
+       box-sizing: border-box;
+       padding: 0.5rem;
        background: var(--color-background-secondary);
      }
      .maps-tutorial-card span {
@@ -69,12 +71,16 @@ Tutorials
        <span>Partial Alignment</span>
      </a>
      <a class="maps-tutorial-card" href="Reference_and_sequential_alignment/index.html">
-       <img src="../../_static/img/Reference%20and%20sequential%20alignment.jpg" alt="Reference and sequential alignment">
+       <img src="../../_static/img/Reference_and_sequential_alignment.jpg" alt="Reference and sequential alignment">
        <span>Reference and Sequential Alignment</span>
      </a>
      <a class="maps-tutorial-card" href="3D_reconstruction/index.html">
        <img src="../../_static/img/3D_reconstruction.jpg" alt="3D reconstruction">
        <span>3D Reconstruction</span>
+     </a>
+      <a class="maps-tutorial-card" href="Multi_modal_volumetric_construction/index.html">
+        <img src="../../_static/img/Multi_modal_volumetric_construction.jpg" alt="Multi modal volumetric construction">
+        <span>Multi Modal Volumetric Construction</span>
      </a>
      <a class="maps-tutorial-card" href="MAPS_Explore/README.html">
        <img src="../../_static/img/MAPS_Explorer.jpg" alt="MAPS Explore">
@@ -93,4 +99,5 @@ Tutorials
    Reference_and_sequential_alignment/index
    3D_reconstruction/index
    Ultra_arge_scale_alignment/index
+   Multi_modal_volumetric_construction/index
    MAPS_Explore/README
