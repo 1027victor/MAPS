@@ -100,4 +100,4 @@ Tutorials
    3D_reconstruction/index
    Ultra_arge_scale_alignment/index
    Multi_modal_volumetric_construction/index
-   MAPS_Explore/README
+   MAPS_Explore/MAPS-Explore-User-Guide-Contents
