@@ -1,3 +1,5 @@
+# Technical Reference
+
 ## Overview
 MAPS-Explorer is a self-hosted interactive environment for processing, aligning, visualizing, interrogating, and exporting large-scale spatial omics datasets in two and three dimensions. The current implementation integrates server-side data preprocessing and indexed molecular retrieval with browser-side WebGL rendering, dedicated Web Workers, spatial indexing, surface reconstruction, molecular mapping, density visualization, and spatial statistical analysis. This document describes the behavior of the production implementation rather than an abstract specification, with particular emphasis on what users can query, how each result is calculated, and how the resulting measurements should be interpreted.
 
@@ -7,7 +9,7 @@ MAPS-Explorer distinguishes two concepts that are important throughout this guid
 
 ---
 
-# 1. Conceptual workflow
+## 1. Conceptual workflow
 A typical MAPS-Explorer analysis consists of six stages:
 
 1. **Project selection and preprocessing**
@@ -50,8 +52,8 @@ These modules share a common coordinate system, row-index mapping strategy, mole
 
 ---
 
-# 2. Coordinate representation and cell indexing
-## 2.1 Coordinate normalization
+## 2. Coordinate representation and cell indexing
+### 2.1 Coordinate normalization
 Before WebGL visualization, each spatial axis is independently normalized. For an input coordinate (x),
 
 ![](./_images/1786535509196-23f76d79-b709-40c0-b7d6-7391e6973267.png)
@@ -72,7 +74,7 @@ The (y)-axis is explicitly inverted to maintain the expected visualization orien
 
 ---
 
-## 2.2 Max Cells
+### 2.2 Max Cells
 For very large datasets, users can restrict the number of points loaded into the browser using **Max Cells**.
 
 Let:
@@ -95,8 +97,8 @@ The mapping between loaded points and their original matrix rows is retained int
 
 ---
 
-# 3. Project preparation
-## 3.1 Project selection
+## 3. Project preparation
+### 3.1 Project selection
 MAPS-Explorer organizes analyses into projects. Selecting a project initializes a project identifier and invalidates state associated with a previously loaded project.
 
 Project-specific state includes:
@@ -114,15 +116,15 @@ Project selection does not imply that processing or alignment has already been c
 
 ---
 
-## 3.2 Source status
+### 3.2 Source status
 Each processed or aligned source has a lightweight status endpoint used by the interface to determine whether the requested data are available.
 
 A source status describes computational readiness rather than browser download progress. Consequently, a large coordinate file can still be downloading after the server-side process has reached 100%.
 
 ---
 
-# 4. Data processing
-## 4.1 Processing an individual dataset
+## 4. Data processing
+### 4.1 Processing an individual dataset
 The Process module converts an input H5AD dataset into formats optimized for interactive random access.
 
 The server reads:
@@ -146,7 +148,7 @@ Temporary results are not considered valid processed outputs until processing co
 
 ---
 
-## 4.2 Batch processing
+### 4.2 Batch processing
 **Process All** applies the same procedure to multiple project files.
 
 Progress represents the number or stage of completed processing operations rather than instantaneous CPU utilization or byte-level file-reading progress.
@@ -155,8 +157,8 @@ When several files are processed sequentially, the displayed percentage can ther
 
 ---
 
-# 5. Binary data representation
-## 5.1 Categorical annotations
+## 5. Binary data representation
+### 5.1 Categorical annotations
 Categorical annotations contain:
 
 1. the number of observations;
@@ -171,7 +173,7 @@ Because categories can be naturally sorted and recoded, MAPS-Explorer associates
 
 ---
 
-## 5.2 Numerical annotations
+### 5.2 Numerical annotations
 Numerical fields contain:
 
 + number of observations;
@@ -184,7 +186,7 @@ This format is used by numerical annotations and several derived analysis respon
 
 ---
 
-# 6. Molecular expression storage
+## 6. Molecular expression storage
 To avoid loading an entire expression matrix into browser memory, MAPS-Explorer stores each gene as an individually addressable compressed block.
 
 For each gene, an index records:
@@ -208,8 +210,8 @@ Rows absent from the block are interpreted as zero.
 
 ---
 
-# 7. Spatial alignment
-## 7.1 Global Align
+## 7. Spatial alignment
+### 7.1 Global Align
 Global Align constructs a combined coordinate representation from processed input datasets and writes the resulting source into the project alignment directory.
 
 After alignment, the 3D viewer reloads aligned data rather than reusing the original processed coordinates.
@@ -223,7 +225,7 @@ The merged point order must remain stable because the same row ordering is used 
 
 ---
 
-## 7.2 Alternative alignment sources
+### 7.2 Alternative alignment sources
 MAPS-Explorer can expose different aligned data products through independent sources, including:
 
 + Global Align;
@@ -236,7 +238,7 @@ Changing source invalidates source-specific coordinate, annotation, and analytic
 
 ---
 
-# 8. 2D Slice Visualization
+## 8. 2D Slice Visualization
 The 2D viewer operates on a selected processed data stem.
 
 The standard loading sequence is:
@@ -254,8 +256,8 @@ For ordinary 2D datasets, changing a label generally updates only the color buff
 
 ---
 
-# 9. 3D Visualization
-## 9.1 Source selection
+## 9. 3D Visualization
+### 9.1 Source selection
 The 3D viewer first identifies available spatial sources and then loads:
 
 + coordinate positions;
@@ -265,7 +267,7 @@ Coordinate availability does not guarantee that annotation metadata are availabl
 
 ---
 
-## 9.2 Rendering
+### 9.2 Rendering
 Point locations are stored in a WebGL `ARRAY_BUFFER`.
 
 Rendering is performed using
@@ -287,8 +289,8 @@ The fragment shader generates circular points from `gl_PointCoord`.
 
 ---
 
-# 10. LABELS
-## 10.1 Categorical labels
+## 10. LABELS
+### 10.1 Categorical labels
 Users can select any available categorical field.
 
 The field is decoded and mapped to the currently loaded point set using the original-row mapping retained after Max Cells sampling.
@@ -303,14 +305,14 @@ Hidden categories normally remain in the GPU position buffer but receive zero al
 
 ---
 
-## 10.2 Numerical labels
+### 10.2 Numerical labels
 Numerical fields are normalized using their stored range and mapped to a continuous color scale.
 
 Additional controls can filter low values or alter minimum point visibility.
 
 ---
 
-## 10.3 Dark Min Alpha
+### 10.3 Dark Min Alpha
 **Dark Min Alpha** is designed specifically for numerical-expression visualization.
 
 Instead of making low-expression cells completely invisible, the renderer maintains a minimum alpha for these points.
@@ -319,7 +321,7 @@ This mechanism should not be interpreted as a general transparency model for all
 
 ---
 
-# 11. Advanced Filter
+## 11. Advanced Filter
 Advanced Filter applies an additional categorical constraint to the currently loaded point population.
 
 The workflow is:
@@ -344,7 +346,7 @@ The currently effective Molecular Heterogeneity implementation does **not** use 
 
 ---
 
-# 12. File visibility
+## 12. File visibility
 When an aligned model contains multiple input datasets, a dedicated file annotation records the source file associated with each point.
 
 Users can hide or restore individual files.
@@ -360,8 +362,8 @@ Consequently, files can be restored without reloading the entire model.
 
 ---
 
-# 13. Point rendering controls
-## 13.1 Point size
+## 13. Point rendering controls
+### 13.1 Point size
 Point Size controls the shader point-size parameter.
 
 The final apparent size also depends on:
@@ -373,7 +375,7 @@ The final apparent size also depends on:
 
 ---
 
-## 13.2 Opacity
+### 13.2 Opacity
 Global point opacity is multiplied with per-point alpha.
 
 For opaque rendering, depth writes provide stable occlusion.
@@ -384,7 +386,7 @@ MAPS-Explorer therefore uses separate rendering strategies for ordinary transpar
 
 ---
 
-# 14. XYZ slicing
+## 14. XYZ slicing
 MAPS-Explorer provides independent slicing controls for the (x), (y), and (z) axes.
 
 For an axis with center (c) and thickness (t), retained positions lie within
@@ -404,7 +406,7 @@ These are independent operations.
 
 ---
 
-# 15. Global Shell
+## 15. Global Shell
 Global Shell reconstructs an approximate continuous boundary from the point cloud.
 
 Importantly, the algorithm is **not** a convex hull and is **not** Poisson surface reconstruction.
@@ -443,7 +445,7 @@ This temporary anisotropic transformation encourages continuity when the dataset
 
 ---
 
-# 16. Label Shell
+## 16. Label Shell
 Label Shell reconstructs surfaces for selected categorical groups.
 
 Two reconstruction modes are available:
@@ -455,7 +457,7 @@ The same interface parameters are exposed to both modes, but separate parameter 
 
 ---
 
-# 17. Strict Label Shell
+## 17. Strict Label Shell
 Strict mode is designed to preserve local concavities, holes, disconnected structures, and fine boundary features.
 
 The processing sequence is
@@ -486,7 +488,7 @@ Approximately 200,000 points can be used per strict reconstruction group, with d
 
 ---
 
-## 17.1 Surface Fit
+### 17.1 Surface Fit
 The Strict mode isosurface threshold is determined from the user-defined Surface Fit parameter (f):
 
 ![](./_images/1786535882386-c87e8a0d-bc09-4d66-8776-1c6b594f8b11.png)
@@ -495,14 +497,14 @@ Changing Surface Fit alters the density isovalue used by Marching Cubes; it does
 
 ---
 
-## 17.2 Density
+### 17.2 Density
 Density controls low-density voxel suppression prior to surface extraction.
 
 Increasing this value preferentially removes sparse regions.
 
 ---
 
-## 17.3 Tolerance
+### 17.3 Tolerance
 Connected components are ranked by size.
 
 Tolerance determines which smaller components are discarded relative to the dominant structures.
@@ -511,7 +513,7 @@ It therefore acts primarily on **component retention**, not point displacement.
 
 ---
 
-## 17.4 Offset
+### 17.4 Offset
 Offset translates reconstructed surface vertices along their normals.
 
 For vertex v, unit normal n, and offset (d),
@@ -520,7 +522,7 @@ For vertex v, unit normal n, and offset (d),
 
 ---
 
-# 18. Smooth Label Shell
+## 18. Smooth Label Shell
 Smooth mode is intended for serial-section datasets in which large or irregular physical spacing between slices would otherwise dominate surface connectivity.
 
 Rather than reconstructing directly in physical (z), Smooth mode first identifies individual slices.
@@ -548,7 +550,7 @@ The current implementation approximately limits:
 
 ---
 
-# 19. Shell mesh sealing and normal repair
+## 19. Shell mesh sealing and normal repair
 Shell meshes undergo additional topology repair.
 
 The procedure:
@@ -566,14 +568,14 @@ Apparent holes with unusual lighting or material appearance can therefore reflec
 
 ---
 
-# 20. Analyze Surface
+## 20. Analyze Surface
 Analyze Surface operates on a **Label Shell mesh**, not directly on the original cells.
 
 The module decomposes surfaces into connected components and reports geometric descriptors.
 
 ---
 
-## 20.1 Component identification
+### 20.1 Component identification
 Mesh vertices have the structure [x, y, z, n_x, n_y, n_z].
 
 Coordinates are quantized at approximately (10^-4) precision to define shared vertices.
@@ -584,7 +586,7 @@ Components are ranked by triangle count, and components containing fewer than tw
 
 ---
 
-## 20.2 Surface area
+### 20.2 Surface area
 For triangle vertices (a,b,c),
 
 ![](./_images/1786536180309-78067308-2542-4c07-be39-871cc1e29d10.png)
@@ -595,7 +597,7 @@ Component area is
 
 ---
 
-## 20.3 Surface volume
+### 20.3 Surface volume
 Each triangle contributes a signed tetrahedral volume
 
 ![](./_images/1786536140475-8b0a295a-55dc-45f4-8ebf-8a30b03e35c5.png)
@@ -604,12 +606,12 @@ The reported component volume is
 
 ![](./_images/1786536150108-694ea022-cfd2-458f-81b7-439295f1bd52.png)
 
-### Important interpretation
+#### Important interpretation
 Volume is reliable only when the reconstructed mesh is sufficiently closed, consistently oriented, and free of severe self-intersections.
 
 ---
 
-## 20.4 What does “cells” mean in Surface Display?
+### 20.4 What does “cells” mean in Surface Display?
 The current implementation does **not** perform exact point-in-polyhedron counting.
 
 Instead, a cell is counted when it lies inside the component's axis-aligned bounding box:
@@ -624,7 +626,7 @@ For curved, concave, or obliquely oriented objects, points may satisfy the bound
 
 ---
 
-# 21. Molecular Heterogeneity and Surface Signal
+## 21. Molecular Heterogeneity and Surface Signal
 The Surface Signal workflow maps a molecular or numerical variable onto a reconstructed Label Shell.
 
 Possible targets include:
@@ -643,7 +645,7 @@ The procedure consists of:
 
 ---
 
-## 21.1 Which cells are used?
+### 21.1 Which cells are used?
 The currently effective implementation uses all points in the browser's loaded normalized point array.
 
 It does **not** apply:
@@ -664,7 +666,7 @@ It does not necessarily mean all cells stored in the project.
 
 ---
 
-# 22. Surface spatial index
+## 22. Surface spatial index
 To accelerate neighborhood searches, Surface analysis constructs a uniform three-dimensional grid using a CSR-like representation.
 
 The index contains:
@@ -685,7 +687,7 @@ The index only eliminates points that cannot belong to the neighborhood. Final m
 
 ---
 
-# 23. Deterministic surface sampling
+## 23. Deterministic surface sampling
 The number of surface samples is user-configurable between approximately 1,000 and 5,000.
 
 Importantly, **Sample Points refers to the number of samples per surface part**, not the total across all parts.
@@ -720,7 +722,7 @@ Because this procedure is deterministic rather than random, repeated runs with i
 
 ---
 
-# 24. Automatic Surface molecular radius
+## 24. Automatic Surface molecular radius
 When an automatic spatial radius is used, MAPS-Explorer combines an estimate based on surface area with one based on three-dimensional point-cloud coverage.
 
 The surface-spacing estimate is
@@ -739,7 +741,7 @@ This radius is expressed in normalized MAPS-Explorer coordinate units rather tha
 
 ---
 
-# 25. Cylindrical molecular neighborhood
+## 25. Cylindrical molecular neighborhood
 For surface sample position (p), unit surface normal (n), and cell coordinate (q),
 
 ![](./_images/1786536603222-68fd22e8-599a-48ca-aa0f-9650e1e7f5fa.png)
@@ -772,7 +774,7 @@ Cells are assigned relative to the surface by the sign of (a):
 
 ---
 
-# 26. Surface Gene Expression
+## 26. Surface Gene Expression
 For conventional molecular surface mapping, the signal assigned to surface sample (s) is
 
 ![](./_images/1786536710838-edba75e1-9bee-4439-8eb7-c48bec6bd96c.png)
@@ -787,7 +789,7 @@ The current implementation therefore does not continuously interpolate between m
 
 ---
 
-# 27. Surface Molecular Gradient
+## 27. Surface Molecular Gradient
 When **Surface Molecular Gradient** is enabled, separate means are calculated on the two sides of the surface:
 
 ![](./_images/1786536776282-57a288f5-076b-46f8-a335-a118359eb0da.png)
@@ -810,7 +812,7 @@ The sign convention is always **inside minus outside**.
 
 ---
 
-## 27.1 Why are the reported cell counts decimal numbers?
+### 27.1 Why are the reported cell counts decimal numbers?
 For every surface sample, contained, inside, and outside cell numbers are integers.
 
 The interface reports averages across all sampled cylinders:
@@ -821,7 +823,7 @@ These averages can therefore be non-integers.
 
 ---
 
-# 28. Surface CPU/WebGPU acceleration
+## 28. Surface CPU/WebGPU acceleration
 WebGPU acceleration, when available, is restricted primarily to classification of candidate cells into cylindrical neighborhoods.
 
 Other operations remain CPU-based, including:
@@ -842,7 +844,7 @@ Therefore, limited total CPU utilization does not necessarily imply that the cal
 
 ---
 
-# 29. Surface caching
+## 29. Surface caching
 MAPS-Explorer maintains a persistent Surface Worker and several caches.
 
 Cached objects can include:
@@ -865,7 +867,7 @@ This design substantially reduces repeated molecular-surface query costs.
 
 ---
 
-# 30. Surface Region Analysis
+## 30. Surface Region Analysis
 Surface Region Analysis extracts a selected portion of an already reconstructed surface.
 
 Users first define one or more XYZ slabs.
@@ -883,7 +885,7 @@ The module is intended for spatial inspection, sectional visualization, and focu
 
 ---
 
-# 31. Cell Density Viewer
+## 31. Cell Density Viewer
 Cell Density Viewer transforms spatial point distributions into continuous density surfaces.
 
 Unlike Molecular Heterogeneity, its input explicitly respects the active visualization filters.
@@ -898,7 +900,7 @@ The input population can therefore reflect:
 
 ---
 
-## 31.1 Two-dimensional histogram
+### 31.1 Two-dimensional histogram
 All visible labels share one spatial bounding box.
 
 The range is expanded by approximately 10% on each side.
@@ -917,7 +919,7 @@ Using one shared bounding box ensures that density surfaces from different label
 
 ---
 
-# 32. Density smoothing
+## 32. Density smoothing
 The Smoothing parameter is interpreted as the Gaussian standard deviation σ.
 
 Kernel radius is
@@ -940,7 +942,7 @@ The outermost rows and columns are subsequently forced to zero to prevent visual
 
 ---
 
-# 33. Density height
+## 33. Density height
 All cell types share one global peak value:
 
 ![](./_images/1786582052433-1d2c48d2-4cbf-4b16-b903-a5f69b672ecd.png)
@@ -953,7 +955,7 @@ Thus, heights are directly comparable across displayed labels.
 
 ---
 
-# 34. Density transparency
+## 34. Density transparency
 For each label (l), let
 
 ![](./_images/1786582076500-41609a4e-bd43-4625-a669-667cc1638f40.png)
@@ -975,7 +977,7 @@ This distinction is important when comparing the visual prominence of two cell p
 
 ---
 
-# 35. Collapse Axis
+## 35. Collapse Axis
 Cell Density is fundamentally calculated as a two-dimensional projected density.
 
 **Collapse Axis** determines how this two-dimensional density surface is displayed in the three-dimensional viewer.
@@ -989,7 +991,7 @@ Collapse Axis does not convert the method into a three-dimensional kernel-densit
 
 ---
 
-# 36. Spatial Gene Interaction
+## 36. Spatial Gene Interaction
 Spatial Gene Interaction provides interactive visualization of molecular co-occurrence among user-defined groups of genes.
 
 Three input groups are available:
@@ -1004,14 +1006,14 @@ It is **not** a probabilistic cell–cell communication inference framework.
 
 ---
 
-## 36.1 Gene-level normalization
+### 36.1 Gene-level normalization
 Each requested gene (g) is independently min–max normalized:
 
 ![](./_images/1786582149564-3302bfc0-69b2-4b08-98b7-3f5fddcdca91.png)
 
 ---
 
-## 36.2 Group aggregation
+### 36.2 Group aggregation
 For selected ligand genes,
 
 ![](./_images/1786582160313-ebc43d5d-85f5-4730-81ed-fcd204f46dcb.png)
@@ -1026,7 +1028,7 @@ The returned group fields are independently normalized again in the browser befo
 
 ---
 
-# 37. Interaction state classification
+## 37. Interaction state classification
 Following thresholding, each point receives a three-bit state:
 
 ![](./_images/1786582195686-2bfb6ab0-fd1e-49f9-8fcf-63b7441423e6.png)
@@ -1057,7 +1059,7 @@ Users can overwrite this palette.
 
 ---
 
-## 37.1 Interaction alpha
+### 37.1 Interaction alpha
 Point transparency is based on the strongest active group:
 
 ![](./_images/1786582219306-99308af7-1fc2-49a3-8faf-570b5bd24421.png)
@@ -1066,7 +1068,7 @@ The exponent (0.35) enhances visualization of intermediate and relatively weak s
 
 ---
 
-# 38. Coexpression
+## 38. Coexpression
 Coexpression combines genes entered across the interaction input fields.
 
 After gene-level normalization, a row-wise product is calculated:
@@ -1079,7 +1081,7 @@ Consequently, Coexpression presently uses a **single ligand-channel color** rath
 
 ---
 
-# 39. What Spatial Gene Interaction does not calculate
+## 39. What Spatial Gene Interaction does not calculate
 The current module does not include:
 
 + a ligand–receptor interaction database;
@@ -1100,7 +1102,7 @@ rather than
 
 ---
 
-# 40. Spatially Variable Gene statistics
+## 40. Spatially Variable Gene statistics
 MAPS-Explorer provides a lightweight spatial autocorrelation ranking intended for rapid exploratory queries.
 
 The server samples
@@ -1140,7 +1142,7 @@ No permutation-derived significance test or multiple-testing correction is calcu
 
 ---
 
-# 41. Marker Gene Statistics
+## 41. Marker Gene Statistics
 Marker Statistics quantifies how strongly the selected categorical annotation explains variation in each gene.
 
 For expression x_i, overall mean μ, group (g) containing n_g observations, and group mean μ_g,
@@ -1172,7 +1174,7 @@ A gene may therefore receive a high η^2 because expression differs strongly amo
 
 ---
 
-# 42. Spatial statistics execution and caching
+## 42. Spatial statistics execution and caching
 Spatial Gene and Marker Statistics are calculated server-side.
 
 A common workflow is used:
@@ -1194,7 +1196,7 @@ The complete ranked result is retained rather than only the first 100 genes.
 
 ---
 
-# 43. Model Frame
+## 43. Model Frame
 Model Frame provides a three-dimensional reference box and dimension annotations around the normalized model.
 
 With frame expansion (e),
@@ -1218,7 +1220,7 @@ Frame edges remain depth tested, meaning that edges behind the tissue can be nat
 
 ---
 
-# 44. Dimension marks
+## 44. Dimension marks
 Dimension labels are positioned relative to the observer rather than statically attached to one screen edge.
 
 This helps maintain readable:
@@ -1233,7 +1235,7 @@ These annotations are visualization references and do not reverse the earlier in
 
 ---
 
-# 45. Auto Rotate
+## 45. Auto Rotate
 Auto Rotate continuously updates the model rotation.
 
 Users can control:
@@ -1247,7 +1249,7 @@ Auto Rotate changes only the camera/model transformation and does not recompute 
 
 ---
 
-# 46. Image export
+## 46. Image export
 High-resolution figure export temporarily enlarges the WebGL drawing buffer.
 
 The export sequence redraws:
@@ -1274,10 +1276,10 @@ After export, the original interactive viewport and rendering scale are restored
 
 ---
 
-# 47. Project configuration
+## 47. Project configuration
 Project configuration distinguishes between parameters that affect only rendering and parameters that require recomputation.
 
-## Rendering-only parameters
+### Rendering-only parameters
 Typical examples include:
 
 + point size;
@@ -1291,7 +1293,7 @@ Typical examples include:
 
 These usually take effect during subsequent rendering without rebuilding the underlying geometry.
 
-## Geometry or analysis parameters
+### Geometry or analysis parameters
 Typical examples include:
 
 + Shell tolerance;
@@ -1309,7 +1311,7 @@ Changing these parameters requires corresponding geometry, neighborhood, density
 
 ---
 
-# 48. Error handling and asynchronous state
+## 48. Error handling and asynchronous state
 MAPS-Explorer performs many operations asynchronously.
 
 Every long-running request must remain associated with the corresponding:
@@ -1330,7 +1332,7 @@ Transferred `ArrayBuffer` objects become detached in the sending execution conte
 
 ---
 
-# 49. Memory considerations
+## 49. Memory considerations
 For (P) loaded points, approximate browser memory requirements include:
 
 ![](./_images/1786582940361-ad01fccd-dc20-4c8c-90fe-f3822a9d4b9e.png)
@@ -1382,7 +1384,7 @@ GPU candidate classification can temporarily create additional large arrays.
 
 ---
 
-# 50. User question: Why do I get “Array buffer allocation failed”?
+## 50. User question: Why do I get “Array buffer allocation failed”?
 This error usually indicates that several large arrays coexist in browser memory.
 
 It does not necessarily mean that one individual array exceeds the theoretical JavaScript TypedArray limit.
@@ -1397,7 +1399,7 @@ Useful mitigations include:
 
 ---
 
-# 51. Reproducibility
+## 51. Reproducibility
 Several major computational steps are deterministic:
 
 + Max Cells row sampling;
@@ -1420,8 +1422,8 @@ However, results can still change when users alter:
 
 ---
 
-# 52. Interpretation guide
-## “Cells” in Analyze Surface
+## 52. Interpretation guide
+### “Cells” in Analyze Surface
 Interpret as:
 
 > number of points covered by the component's axis-aligned bounding box.
@@ -1429,7 +1431,7 @@ Interpret as:
 
 Do not interpret as exact cells enclosed by the mesh.
 
-## Molecular Heterogeneity
+### Molecular Heterogeneity
 Interpret as:
 
 > molecular measurements calculated from all browser-loaded cells around sampled surface locations.
@@ -1437,30 +1439,30 @@ Interpret as:
 
 Do not assume current label, file, Advanced Filter, or slab visibility is applied.
 
-## Molecular Gradient
+### Molecular Gradient
 Interpret as:
 
 ![](./_images/1786585509277-440a9247-461b-4d75-8d5d-f050d61d43e2.png)
 
-## Sample Points
+### Sample Points
 Interpret as:
 
 > number of sampled positions per surface part.
 >
 
-## Cell Density height
+### Cell Density height
 Interpret as:
 
 > density normalized against the global maximum across displayed labels.
 >
 
-## Cell Density transparency
+### Cell Density transparency
 Interpret as:
 
 > opacity modulated relative to the individual label's own density peak.
 >
 
-## Spatially Variable Gene score
+### Spatially Variable Gene score
 Interpret as:
 
 > Pearson correlation between expression and local KNN-neighbor mean expression.
@@ -1468,7 +1470,7 @@ Interpret as:
 
 Do not report it as Moran's I.
 
-## Marker score
+### Marker score
 Interpret as:
 
 > η^2, the proportion of expression variance explained by the selected annotation.
@@ -1476,7 +1478,7 @@ Interpret as:
 
 Do not report it as differential-expression significance.
 
-## Spatial Gene Interaction
+### Spatial Gene Interaction
 Interpret as:
 
 > visualization of spatially coincident normalized gene-group expression.
@@ -1484,19 +1486,19 @@ Interpret as:
 
 Do not report it as a statistically inferred communication probability.
 
-## Coexpression
+### Coexpression
 Interpret as:
 
 > multiplicative coexpression of individually normalized genes displayed through the ligand color channel.
 >
 
-## Smooth Shell
+### Smooth Shell
 Interpret as:
 
 > surface reconstruction in slice-index space followed by mapping back to physical slice coordinates.
 >
 
-## Strict Shell
+### Strict Shell
 Interpret as:
 
 > surface reconstruction that more directly retains the geometry of the normalized point cloud and therefore more readily preserves local gaps, concavities, and disconnected regions.
@@ -1506,7 +1508,7 @@ These implementation-specific interpretation boundaries are essential for reprod
 
 ---
 
-# 53. Summary
+## 53. Summary
 MAPS-Explorer couples indexed molecular storage, deterministic subsampling, WebGL visualization, dedicated parallel Workers, surface reconstruction, spatial indexing, molecular boundary analysis, density reconstruction, spatial co-occurrence visualization, and lightweight spatial statistics within a unified interactive environment.
 
 Its principal analytical advantage is the ability to move continuously between the original spatial point representation and derived geometric representations of tissue organization. Users can therefore query not only where cells or molecules are located, but also how molecular signals relate to reconstructed boundaries, how densities vary across tissue regions, how molecular programs co-occur spatially, and how gene expression associates with local spatial structure or categorical cell states.
