@@ -1,5 +1,5 @@
 # 3. Demo Data
-Six preprocessed demo datasets are available at [http://www.bioinfor.tech/maps/](http://www.bioinfor.tech/maps/). Two nonredundant test datasets are also available for hands-on use: [MAPS-example.zip](https://drive.google.com/file/d/1xrS71mh_tn8CpBYVwZjm2x51R2atUDDF/view?usp=drive_link) and [MAPS-example-full.zip](https://drive.google.com/file/d/1KsbesaQBtDAyKmjK7fNaeLfjwLBbRVWe/view?usp=drive_link).
+Six preprocessed demo datasets are available at [https://bioinfor.imu.edu.cn/maps-explorer/](https://bioinfor.imu.edu.cn/maps-explorer/). Two nonredundant test datasets are also available for hands-on use: [MAPS-example.zip](https://drive.google.com/file/d/1xrS71mh_tn8CpBYVwZjm2x51R2atUDDF/view?usp=drive_link) and [MAPS-example-full.zip](https://drive.google.com/file/d/1KsbesaQBtDAyKmjK7fNaeLfjwLBbRVWe/view?usp=drive_link).
 
 ## 3.1 example_project
 This tutorial dataset contains a small number of slices and therefore loads quickly. It contains 6,918,865 cells, with an estimated loading time of approximately 3 seconds for the Global Align 3D visualization:

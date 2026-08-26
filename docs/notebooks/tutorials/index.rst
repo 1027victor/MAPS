@@ -82,7 +82,7 @@ Tutorials
         <img src="../../_static/img/Multi_modal_volumetric_construction.jpg" alt="Multi modal volumetric construction">
         <span>Multi Modal Volumetric Construction</span>
      </a>
-     <a class="maps-tutorial-card" href="MAPS_Explore/README.html">
+     <a class="maps-tutorial-card" href="MAPS_Explore/MAPS-Explore-User-Guide-Contents.html">
        <img src="../../_static/img/MAPS_Explorer.jpg" alt="MAPS Explore">
        <span>MAPS Explore</span>
      </a>
